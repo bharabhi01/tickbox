@@ -1,12 +1,17 @@
 import axios from 'axios';
 
-export const setGoals = (requestPayload) => {
-    console.log(requestPayload);
-    // try {
-    //     const response = axios.post('http://localhost:3000/setGoals', requestPayload);
-    //     dispatch({ type: 'SET_GOALS', payload: response.data });
-    //     console.log(response);
-    // } catch (error) {
-    //     console.error(error);
-    // }
-}
+export const setGoals = async (requestPayload) => {
+    try {
+        const response = await axios.post('http://localhost:3001/goals', requestPayload, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            }
+        });
+
+        return response.data;
+    } catch (error) {
+        console.error('Error setting goals:', error);
+        throw error;
+    }
+};
