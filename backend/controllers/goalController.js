@@ -25,9 +25,7 @@ const setGoals = async (req, res) => {
             ai_response: aiResponse,
         });
         res.status(201).json({
-            goal: goal,
-            description: description,
-            ai_response: aiResponse,
+            newGoal
         });
     } catch (error) {
         res.status(500).json({ message: error.message });
