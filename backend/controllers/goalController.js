@@ -24,10 +24,10 @@ const setGoals = async (req, res) => {
             description,
             ai_response: aiResponse,
         });
-        console.log(newGoal);
         res.status(201).json({
+            goal: goal,
+            description: description,
             ai_response: aiResponse,
-            goal: newGoal,
         });
     } catch (error) {
         res.status(500).json({ message: error.message });
