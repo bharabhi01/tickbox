@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 import connectDB from './config/db.js';
 import cors from 'cors';
 import goalRoutes from './routes/goal.js';
+import authRoutes from './routes/auth.js';
 import express from 'express';
 
 const app = express();
@@ -23,4 +24,4 @@ app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
 
-app.use('/', goalRoutes);
+app.use('/', goalRoutes, authRoutes);
