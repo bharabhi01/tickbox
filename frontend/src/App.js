@@ -1,17 +1,20 @@
-import logo from './logo.svg';
-import './App.css';
-import Item from './pages/Item';
-
+import { BrowserRouter } from 'react-router-dom';
 import { NextUIProvider } from "@nextui-org/react";
-
+import Routes from './Routes';
+import { AuthProvider } from './context/AuthProvider';
+import './App.css';
 
 function App() {
   return (
-    <NextUIProvider>
-      <div className="App-header">
-        <Item />
-      </div>
-    </NextUIProvider>
+    <BrowserRouter>
+      <AuthProvider>
+        <NextUIProvider>
+          <div className="App-header">
+            <Routes />
+          </div>
+        </NextUIProvider>
+      </AuthProvider>
+    </BrowserRouter>
   );
 }
 
