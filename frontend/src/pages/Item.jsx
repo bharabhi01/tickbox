@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Form, Input, Button, Textarea, Card, CardHeader, CardBody, CardFooter, Chip, Checkbox, Progress } from "@nextui-org/react";
 import { setGoals } from "../actions/setGoals";
-
+import { useAuth } from '../context/AuthProvider';
 const Item = () => {
     const [submitted, setSubmitted] = useState(null);
     const [steps, setSteps] = useState({});
     const [isLoading, setIsLoading] = useState(false);
     const [value, setValue] = React.useState(0);
+    const { token } = useAuth();
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -29,7 +30,7 @@ const Item = () => {
 
         try {
             setIsLoading(true);
-            const response = await setGoals(requestPayload);
+            const response = await setGoals(requestPayload, token);
             setSubmitted(response.newGoal);
             setSteps(response.newGoal.ai_response);
             setIsLoading(false);

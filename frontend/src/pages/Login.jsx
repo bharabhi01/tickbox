@@ -8,6 +8,7 @@ const Login = () => {
     const { login } = useAuth();
     const navigate = useNavigate();
     const [error, setError] = useState('');
+    const { token } = useAuth();
 
     const onSubmit = async (e) => {
         e.preventDefault();
@@ -17,7 +18,7 @@ const Login = () => {
         console.log(data);
 
         try {
-            const response = await loginUser(data);
+            const response = await loginUser(data, token);
             login(response.user, response.token);
             navigate('/goals');
         } catch (err) {

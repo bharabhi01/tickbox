@@ -3,7 +3,7 @@ import { generateAIResponse } from '../helper/ai.js';
 
 const getGoals = async (req, res) => {
     try {
-        const goals = await Goal.find();
+        const goals = await Goal.find({ user: req.user._id });
         if (!goals) {
             return res.status(400).json({ message: 'No goals found' });
         }
@@ -14,12 +14,16 @@ const getGoals = async (req, res) => {
 };
 
 const setGoals = async (req, res) => {
+    if (!req.user) {
+        return res.status(401).json({ message: 'User not authenticated' });
+    }
     const { goal, description } = req.body;
-    console.log(goal, description);
+    const user = req.user._id;
 
     try {
         const aiResponse = await generateAIResponse(goal, description);
         const newGoal = await Goal.create({
+            user,
             goal,
             description,
             ai_response: aiResponse,
