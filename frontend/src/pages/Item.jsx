@@ -6,7 +6,7 @@ const Item = () => {
     const [submitted, setSubmitted] = useState(null);
     const [steps, setSteps] = useState({});
     const [isLoading, setIsLoading] = useState(false);
-    const [value, setValue] = React.useState(0);
+    const [value, setValue] = useState(0);
     const { token } = useAuth();
 
     useEffect(() => {
@@ -19,9 +19,7 @@ const Item = () => {
 
     const onSubmit = async (e) => {
         e.preventDefault();
-
         const data = Object.fromEntries(new FormData(e.currentTarget));
-        console.log(data);
 
         const requestPayload = {
             goal: data.goal,
@@ -32,14 +30,14 @@ const Item = () => {
         try {
             setIsLoading(true);
             const response = await setGoals(requestPayload, token);
-            setSubmitted(response.newGoal);
-            
-            const initialSteps = Object.keys(response.newGoal.ai_response.roadmap.steps).reduce((acc, step) => {
+            setSubmitted(response.ai_response);
+
+            // Initialize steps state with all steps set to false
+            const initialSteps = Object.keys(response.ai_response.steps).reduce((acc, step) => {
                 acc[step] = false;
                 return acc;
             }, {});
             setSteps(initialSteps);
-            setIsLoading(false);
         } catch (error) {
             console.error('Failed to submit goal:', error);
         } finally {
@@ -101,50 +99,50 @@ const Item = () => {
                 <Button type="submit">Submit</Button>
             </Form>
 
-            {
-                isLoading ?
-                    <Progress
-                        aria-label="Generating your learning path..."
-                        className="max-w-md"
-                        color="primary"
-                        showValueLabel={true}
-                        size="md"
-                        value={value}
-                    /> :
-                    submitted && Object.entries(submitted.ai_response.roadmap.steps).map(([step, stepData]) => (
-                        <Checkbox
-                            key={step}
-                            isSelected={steps[step]}
-                            onValueChange={(isSelected) =>
-                                setSteps(prev => ({ ...prev, [step]: isSelected }))
-                            }
-                            className="mb-4 block"
-                        >
-                            <Card className="max-w-2xl w-full">
-                                <CardHeader className="justify-between">
-                                    <div className="flex gap-5">
-                                        <div className="flex flex-col gap-1 items-start justify-center">
-                                            <h4 className="text-small font-semibold leading-none text-default-600">{step}</h4>
-                                        </div>
+            {isLoading ? (
+                <Progress
+                    aria-label="Generating your learning path..."
+                    className="max-w-md"
+                    color="primary"
+                    showValueLabel={true}
+                    size="md"
+                    value={value}
+                />
+            ) : (
+                submitted && Object.entries(submitted.steps).map(([step, stepData]) => (
+                    <Checkbox
+                        key={step}
+                        isSelected={steps[step]}
+                        onValueChange={(isSelected) =>
+                            setSteps(prev => ({ ...prev, [step]: isSelected }))
+                        }
+                        className="mb-4 block"
+                    >
+                        <Card className="max-w-2xl w-full">
+                            <CardHeader className="justify-between">
+                                <div className="flex gap-5">
+                                    <div className="flex flex-col gap-1 items-start justify-center">
+                                        <h4 className="text-small font-semibold leading-none text-default-600">{step}</h4>
                                     </div>
-                                    <Chip>{formatDate(stepData.start_date)} - {formatDate(stepData.end_date)}</Chip>
-                                </CardHeader>
-                                <CardBody className="px-3 py-0 text-small text-default-400">
-                                    <p>{stepData.description}</p>
-                                </CardBody>
-                                <CardFooter className="gap-3 flex-col items-start">
-                                    {stepData.links.map((link, index) => (
-                                        <div key={index} className="flex gap-1 w-full">
-                                            <p className="font-semibold text-default-400 text-small">
-                                                <a href={link} target="_blank" rel="noopener noreferrer">{link}</a>
-                                            </p>
-                                        </div>
-                                    ))}
-                                </CardFooter>
-                            </Card>
-                        </Checkbox>
-                    ))
-            }
+                                </div>
+                                <Chip>{formatDate(stepData.start_date)} - {formatDate(stepData.end_date)}</Chip>
+                            </CardHeader>
+                            <CardBody className="px-3 py-0 text-small text-default-400">
+                                <p>{stepData.description}</p>
+                            </CardBody>
+                            <CardFooter className="gap-3 flex-col items-start">
+                                {stepData.links.map((link, index) => (
+                                    <div key={index} className="flex gap-1 w-full">
+                                        <p className="font-semibold text-default-400 text-small">
+                                            <a href={link} target="_blank" rel="noopener noreferrer">{link}</a>
+                                        </p>
+                                    </div>
+                                ))}
+                            </CardFooter>
+                        </Card>
+                    </Checkbox>
+                ))
+            )}
         </div>
     );
 }

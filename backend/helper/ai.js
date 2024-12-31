@@ -47,14 +47,19 @@ Personal Goals:
 - Add progress tracking mechanisms
 - Productivity and time management steps
 
-Follow this format:
-    "Step X Step Header": {
-        "description": "Detailed description of the step",
-        "start_date": "DD-MM-YYYY",
-        "end_date": "DD-MM-YYYY",
-        "links": [
-            "Relevant resource links for this specific step"
-        ]
+Follow this format strictly:
+    "goal_name": "goal_name",
+    "goal_type": "goal_type",
+    "description": "description",
+    "steps": {
+        "Step X Step Header": {
+            "description": "Detailed description of the step",
+            "start_date": "DD-MM-YYYY",
+            "end_date": "DD-MM-YYYY",
+            "links": [
+                "Relevant resource links for this specific step"
+            ]
+        }
     }
 
 Important:

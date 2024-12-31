@@ -4,10 +4,11 @@ import { generateAIResponse } from '../helper/ai.js';
 const getGoals = async (req, res) => {
     try {
         const goals = await Goal.find({ user: req.user._id });
+        console.log("goals", goals);
         if (!goals) {
             return res.status(400).json({ message: 'No goals found' });
         }
-        res.status(200).json(goals);
+        res.status(200).json(goals.map(goal => goal.ai_response));
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -24,13 +25,10 @@ const setGoals = async (req, res) => {
         const aiResponse = await generateAIResponse(goal, description, type);
         const newGoal = await Goal.create({
             user,
-            goal,
-            description,
-            type,
             ai_response: aiResponse,
         });
         res.status(201).json({
-            newGoal
+            ai_response: newGoal.ai_response,
         });
     } catch (error) {
         res.status(500).json({ message: error.message });

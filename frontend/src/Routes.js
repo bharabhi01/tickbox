@@ -3,6 +3,7 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Item from './pages/Item';
 import ProtectedRoute from './ProtectedRoute';
+import ViewGoals from './pages/ViewGoals';
 
 const AppRoutes = () => {
     return (
@@ -14,6 +15,14 @@ const AppRoutes = () => {
                 element={
                     <ProtectedRoute>
                         <Item />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/viewGoals"
+                element={
+                    <ProtectedRoute>
+                        <ViewGoals />
                     </ProtectedRoute>
                 }
             />
