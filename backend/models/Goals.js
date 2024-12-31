@@ -8,6 +8,7 @@ const goalSchema = new mongoose.Schema({
     },
     goal: String,
     description: String,
+    type: String,
     ai_response: JSON,
 });
 

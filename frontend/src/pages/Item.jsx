@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Form, Input, Button, Textarea, Card, CardHeader, CardBody, CardFooter, Chip, Checkbox, Progress } from "@nextui-org/react";
+import { Form, Input, Button, Textarea, Card, CardHeader, CardBody, CardFooter, Chip, Checkbox, Progress, Select, SelectItem } from "@nextui-org/react";
 import { setGoals } from "../actions/setGoals";
 import { useAuth } from '../context/AuthProvider';
 const Item = () => {
@@ -26,13 +26,19 @@ const Item = () => {
         const requestPayload = {
             goal: data.goal,
             description: data.description,
+            type: data.type,
         }
 
         try {
             setIsLoading(true);
             const response = await setGoals(requestPayload, token);
             setSubmitted(response.newGoal);
-            setSteps(response.newGoal.ai_response);
+            
+            const initialSteps = Object.keys(response.newGoal.ai_response.roadmap.steps).reduce((acc, step) => {
+                acc[step] = false;
+                return acc;
+            }, {});
+            setSteps(initialSteps);
             setIsLoading(false);
         } catch (error) {
             console.error('Failed to submit goal:', error);
@@ -56,12 +62,37 @@ const Item = () => {
                 onSubmit={onSubmit}
                 className="max-w-2xl w-full gap-4"
             >
+                <Select
+                    isRequired
+                    label="Goal Type"
+                    labelPlacement="inside"
+                    name="type"
+                    placeholder="Select type of goal"
+                >
+                    <SelectItem key="personal" value="personal">
+                        Personal
+                    </SelectItem>
+                    <SelectItem key="professional" value="professional">
+                        Professional
+                    </SelectItem>
+                    <SelectItem key="academic" value="academic">
+                        Academic
+                    </SelectItem>
+                    <SelectItem key="health" value="health">
+                        Health
+                    </SelectItem>
+                    <SelectItem key="financial" value="financial">
+                        Financial
+                    </SelectItem>
+                </Select>
                 <Input
+                    isRequired
                     label="Goal"
                     placeholder="Enter your goal"
                     name="goal"
                 />
                 <Textarea
+                    isRequired
                     name="description"
                     label="Description"
                     placeholder="Describe your goal (By when you want to achieve it, etc.)"
@@ -80,30 +111,33 @@ const Item = () => {
                         size="md"
                         value={value}
                     /> :
-                    submitted && Object.entries(submitted.ai_response).map(([step, details]) => (
+                    submitted && Object.entries(submitted.ai_response.roadmap.steps).map(([step, stepData]) => (
                         <Checkbox
+                            key={step}
                             isSelected={steps[step]}
                             onValueChange={(isSelected) =>
                                 setSteps(prev => ({ ...prev, [step]: isSelected }))
                             }
                             className="mb-4 block"
                         >
-                            <Card key={step} className="max-w-2xl w-full">
+                            <Card className="max-w-2xl w-full">
                                 <CardHeader className="justify-between">
                                     <div className="flex gap-5">
                                         <div className="flex flex-col gap-1 items-start justify-center">
                                             <h4 className="text-small font-semibold leading-none text-default-600">{step}</h4>
                                         </div>
                                     </div>
-                                    <Chip>{formatDate(details.start_date)} - {formatDate(details.end_date)}</Chip>
+                                    <Chip>{formatDate(stepData.start_date)} - {formatDate(stepData.end_date)}</Chip>
                                 </CardHeader>
                                 <CardBody className="px-3 py-0 text-small text-default-400">
-                                    <p>{details.description}</p>
+                                    <p>{stepData.description}</p>
                                 </CardBody>
-                                <CardFooter className="gap-3">
-                                    {details.links.map((link, index) => (
-                                        <div className="flex gap-1">
-                                            <p className="font-semibold text-default-400 text-small">{<a href={link} target="_blank" rel="noopener noreferrer">{link}</a>}</p>
+                                <CardFooter className="gap-3 flex-col items-start">
+                                    {stepData.links.map((link, index) => (
+                                        <div key={index} className="flex gap-1 w-full">
+                                            <p className="font-semibold text-default-400 text-small">
+                                                <a href={link} target="_blank" rel="noopener noreferrer">{link}</a>
+                                            </p>
                                         </div>
                                     ))}
                                 </CardFooter>

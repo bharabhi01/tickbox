@@ -11,19 +11,59 @@ const getTodayDate = () => {
     return `${year}-${month}-${day}`;
 }
 
-const generateAIResponse = async (goal, description) => {
+const generateAIResponse = async (goal, description, type) => {
     console.log("Generating AI response...");
 
-    const prompt = `You are a helpful assistant that generates AI responses for goals and descriptions. You are given a goal and a description where goal is the goal name and the description describes the goal and you need to analyze the goal and the description and generate a roadmap for the goal based on the description. The roadmap needs to be very detailed and specific to the goal and the description. It should be in the form of JSON Object with each step a different key and the value being the step description. Follow this format:  "Step 2 Step Header": {
-                "description": "Detailed description of the step",
-                "start_date": "29-01-2025",
-                "end_date": "28-02-2025",
-                "links": [
-                    "https://www.codecademy.com/learn/learn-python-3",
-                    "https://www.udacity.com/course/intro-to-python--ud1110"
-                ]
-            },
-            Keep in the mind the goal end date that would be in the description and the goal start date that would be in the goal else start date would be ${getTodayDate()}. For each step, you need to generate a start date and end date in the format of date-month-year (for example 1st december 2024). Also, always include links to the steps so that the user can learn more about the step. So, the goal is ${goal} and the description is ${description}.`;
+    const prompt = `You are a specialized goal planning assistant. Your task is to create customized roadmaps based on the following inputs:
+- Goal Name: ${goal}
+- Description: ${description}
+- Type: ${type} (Personal/Professional/Academic/Health/Financial)
+
+Generate a detailed roadmap following these type-specific guidelines:
+
+Professional Goals:
+- Focus on career development milestones
+- Include industry-specific certifications
+- Add networking and skill-building activities
+
+Academic Goals:
+- Structure around academic terms/semesters
+- Include study milestones and exam preparations
+- Add research and practical application components
+
+Health Goals:
+- Include progressive fitness/health milestones
+- Add regular check-in points
+- Include lifestyle modification steps
+
+Financial Goals:
+- Break down into specific savings/investment targets
+- Include financial education steps
+- Add milestone-based reviews
+
+Personal Goals:
+- Create balanced, achievable mini-goals
+- Include skill development steps
+- Add progress tracking mechanisms
+- Productivity and time management steps
+
+Follow this format:
+    "Step X Step Header": {
+        "description": "Detailed description of the step",
+        "start_date": "DD-MM-YYYY",
+        "end_date": "DD-MM-YYYY",
+        "links": [
+            "Relevant resource links for this specific step"
+        ]
+    }
+
+Important:
+- Use start date from goal or default to ${getTodayDate()}
+- Consider end date mentioned in description
+- Each step must include relevant, high-quality resource links
+- Dates should be in DD-MM-YYYY format
+- Steps should be progressive and build upon each other
+- Include 6-8 detailed steps for each roadmap`;
 
     const result = await model.generateContent(prompt);
     const response = await result.response.text();
