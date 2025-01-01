@@ -14,7 +14,6 @@ const Signup = () => {
         setError('');
 
         const data = Object.fromEntries(new FormData(e.currentTarget));
-        console.log(data);
 
         try {
             const response = await signupUser(data);

@@ -30,3 +30,14 @@ export const signupUser = async (credentials) => {
 
     return response.json();
 }
+
+export const getUserInfo = async (token) => {
+    const response = await fetch(`http://localhost:3001/userInfo`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+    });
+    return response.json();
+}   

@@ -4,7 +4,6 @@ import { generateAIResponse } from '../helper/ai.js';
 const getGoals = async (req, res) => {
     try {
         const goals = await Goal.find({ user: req.user._id });
-        console.log("goals", goals);
         if (!goals) {
             return res.status(400).json({ message: 'No goals found' });
         }

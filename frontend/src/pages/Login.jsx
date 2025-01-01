@@ -15,7 +15,6 @@ const Login = () => {
         setError('');
 
         const data = Object.fromEntries(new FormData(e.currentTarget));
-        console.log(data);
 
         try {
             const response = await loginUser(data, token);

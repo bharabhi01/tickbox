@@ -1,14 +1,25 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import ViewGoals from './ViewGoals';
 import Item from './Item';
 import { Card, CardBody, Tabs, Tab, Button } from "@nextui-org/react";
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthProvider';
+import { getUserInfo } from '../actions/auth';
 
 const Dashboard = () => {
     const navigate = useNavigate();
     const { logout } = useAuth();
-    
+    const { token } = useAuth();
+    const [userInfo, setUserInfo] = useState({});
+
+    useEffect(() => {
+        const fetchUserInfo = async () => {
+            const response = await getUserInfo(token);
+            setUserInfo(response);
+        }
+        fetchUserInfo();
+    }, [token]);
+
     let tabs = [
         {
             id: 1,
@@ -35,7 +46,7 @@ const Dashboard = () => {
                 Logout
             </Button>
             <h2 className="text-2xl font-semibold leading-none text-default-600 text-center" style={{ marginBottom: '100px' }}>
-                Welcome!
+                Welcome <span style={{ fontFamily: 'apple-system', fontStyle: 'italic' }}>{userInfo.first_name} {userInfo.last_name}!</span>
             </h2>
             <Tabs aria-label="Dynamic tabs" items={tabs} variant="underlined">
                 {(item) => (
