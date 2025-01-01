@@ -30,10 +30,7 @@ const ViewGoals = () => {
     return (
         <div className="max-w-2xl w-full">
             <div className="flex flex-col gap-4">
-                <h2 className="text-2xl font-semibold leading-none text-default-600 text-center">
-                    Your <span className="italic">Goals</span>
-                </h2>
-                <Accordion variant="shadow">
+                <Accordion>
                     {goals.map((goal, index) => (
                         <AccordionItem
                             key={index}

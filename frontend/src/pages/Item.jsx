@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Form, Input, Button, Textarea, Card, CardHeader, CardBody, CardFooter, Chip, Checkbox, Progress, Select, SelectItem } from "@nextui-org/react";
 import { setGoals } from "../actions/setGoals";
 import { useAuth } from '../context/AuthProvider';
+
 const Item = () => {
     const [submitted, setSubmitted] = useState(null);
     const [steps, setSteps] = useState({});
