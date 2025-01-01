@@ -20,7 +20,7 @@ const Login = () => {
         try {
             const response = await loginUser(data, token);
             login(response.user, response.token);
-            navigate('/goals');
+            navigate('/dashboard');
         } catch (err) {
             setError('Invalid username or password');
         }

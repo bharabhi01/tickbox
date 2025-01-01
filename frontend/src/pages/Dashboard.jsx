@@ -2,8 +2,13 @@ import React from 'react';
 import ViewGoals from './ViewGoals';
 import Item from './Item';
 import { Card, CardBody, Tabs, Tab, Button } from "@nextui-org/react";
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthProvider';
 
 const Dashboard = () => {
+    const navigate = useNavigate();
+    const { logout } = useAuth();
+    
     let tabs = [
         {
             id: 1,
@@ -23,7 +28,8 @@ const Dashboard = () => {
                 className="absolute top-0 right-0 px-4 py-2 text-sm font-mediums"
                 style={{ marginTop: '10px', marginRight: '10px' }}
                 onPress={() => {
-                    console.log("Logout clicked");
+                    logout();
+                    navigate('/login');
                 }}
             >
                 Logout
