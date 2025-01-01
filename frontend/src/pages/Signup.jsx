@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Form, Input, Button } from '@nextui-org/react';
+import { Form, Input, Button, Alert } from '@nextui-org/react';
 import { signupUser } from '../actions/auth';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthProvider';
@@ -83,6 +83,14 @@ const Signup = () => {
                     </Button>
                 </div>
             </Form>
+
+            {error &&
+                <div className="flex justify-center" style={{ marginTop: '200px' }}>
+                    <Alert color='danger' variant='faded' hideIcon>
+                        {error}
+                    </Alert>
+                </div>
+            }
         </div>
     );
 }
