@@ -36,12 +36,14 @@ const Dashboard = () => {
         <div className="max-w-2xl w-full">
             <Button
                 variant='ghost'
-                className="absolute top-0 right-0 px-4 py-2 text-sm font-mediums"
-                style={{ marginTop: '10px', marginRight: '10px' }}
+                className="absolute top-0 right-0 px-4 py-2 text-2xl font-medium text-default-600"
+                style={{ marginTop: '10px', marginRight: '10px', fontSize: '13px' }}
                 onPress={() => {
                     logout();
                     navigate('/login');
                 }}
+                size="sm"
+
             >
                 Logout
             </Button>

@@ -1,7 +1,7 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash-exp' });
+const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash-thinking-exp-01-21' });
 const getTodayDate = () => {
     const today = new Date();
     const year = today.getFullYear();
@@ -62,7 +62,7 @@ Follow this format strictly:
     }
 
 Important:
-- Use start date from goal or default to ${getTodayDate()}
+- Use start date from goal or default to ${getTodayDate()}, which is the current date in INDIA
 - Consider end date mentioned in description
 - Each step must include relevant, high-quality resource links
 - Dates should be in DD-MM-YYYY format
