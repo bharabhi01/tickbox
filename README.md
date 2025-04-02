@@ -1,1 +1,1 @@
-Input your goals and get step by step process to achieve that goal. Powered by Gemini 2.0
+Get closer to your goals by getting step by step guide powered by gemini 2.0
